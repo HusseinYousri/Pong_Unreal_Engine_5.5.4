@@ -1,0 +1,51 @@
+# Unreal Engine 5 project .gitignore
+
+# Build and intermediate folders
+Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+
+# User-specific and IDE files
+.vscode/
+*.sln
+*.opensdf
+*.sdf
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.VC.db
+*.VC.opendb
+
+# Compiled binaries and logs
+*.log
+*.pdb
+*.obj
+*.exe
+*.dll
+*.lib
+*.exp
+
+# Ignore crash and debug info
+*.dmp
+*.cache
+*.db
+*.sublime-workspace
+*.sublime-project
+
+# Ignore backup and autosave files
+*.bak
+*.tmp
+*.old
+*.orig
+
+# Ignore macOS and Windows system files
+.DS_Store
+Thumbs.db
+
+# Ignore Unreal Engine specific files
+.vs/
+
+# Ignore local build data
+Build/
