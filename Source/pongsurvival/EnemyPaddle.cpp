@@ -5,6 +5,7 @@
 #include "Components/BoxComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Ball.h"
+#include "PongGameInstance.h"
 
 // Sets default values
 AEnemyPaddle::AEnemyPaddle()
@@ -17,6 +18,32 @@ AEnemyPaddle::AEnemyPaddle()
 	
 	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>("EnemyPaddle MeshComp");
 	MeshComp->SetupAttachment(BaseCollision);
+
+}
+
+void AEnemyPaddle::BeginPlay()
+{
+	Super::BeginPlay();
+
+	if (!bCanControlSpeed)
+	{
+		UPongGameInstance* GameInstance = Cast<UPongGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
+    	if (GameInstance)
+    	{
+        	switch (GameInstance->GetDifficulty())
+        	{
+           	 	case EGameDifficulty::Easy:      TrackSpeed = 6.0f; break;
+            	case EGameDifficulty::Medium:    TrackSpeed = 8.0f; break;
+            	case EGameDifficulty::Hard:      TrackSpeed = 11.0f; break;
+        	}
+    	}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Remember You Have bCanControlSpeed set to true!"));
+	}
+	
 }
 
 // Called every frame

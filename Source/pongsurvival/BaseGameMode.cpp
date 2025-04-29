@@ -4,33 +4,83 @@
 #include "BaseGameMode.h"
 #include "Kismet/GameplayStatics.h"
 #include "Ball.h"
+#include "GameplayWidget.h"
+#include "MessagesWidget.h"
 
 ABaseGameMode::ABaseGameMode()
 {
-    // Enable ticking
     PrimaryActorTick.bCanEverTick = true;
+}
+
+void ABaseGameMode::BeginPlay()
+{
+    Super::BeginPlay();
+
+    AddGamePlayWidgetToViewport();
+    AddMessagesWidgetToViewport();
 }
 
 void ABaseGameMode::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
-    // Win check
+    // Continuously update the scores
+    UpdateScores();
+
+    // Check Win Condition
     WinCheck();
+}
+
+void ABaseGameMode::GameOverMessageAndAnimation(FString NewGameOverText)
+{
+    if (!MessagesWidget) {return;}
+    MessagesWidget->GameOverText = FText::FromString(NewGameOverText);
+    MessagesWidget->PlayGameOverAnimation();
+}   
+
+void ABaseGameMode::AddMessagesWidgetToViewport()
+{
+    MessagesWidget = CreateWidget<UMessagesWidget>(GetWorld(), MessagesWidgetClass);
+    if (!MessagesWidget) {return;}
+    MessagesWidget->AddToViewport();
+}
+
+void ABaseGameMode::AddGamePlayWidgetToViewport()
+{
+    GameplayWidget = CreateWidget<UGameplayWidget>(GetWorld(), GameplayWidgetClass);
+    if (!GameplayWidget) {return;}
+    GameplayWidget->AddToViewport();
+}
+
+void ABaseGameMode::UpdateScores()
+{
+    if (!GameplayWidget) {return;}
+    GameplayWidget->PlayerScoreInt = PlayerScore;
+    GameplayWidget->EnemyScoreInt = EnemyScore;
 }
 
 void ABaseGameMode::WinCheck()
 {
-    if (PlayerScore == 10)
+    if (!bSomeoneWon && PlayerScore >= MaxScore)
     {
-        UE_LOG(LogTemp, Warning, TEXT("Player Win"));
-        RestartGame();
+        GameOverMessageAndAnimation("Player Win");
+        DelayBeforeRestart();
+        bSomeoneWon = true;
+        bCanSpawnBall = false;
     }
-    else if (EnemyScore == 10)
+    else if (!bSomeoneWon && EnemyScore >= MaxScore)
     {
-        UE_LOG(LogTemp, Warning, TEXT("Enemy Win"));
-        RestartGame();
+        GameOverMessageAndAnimation("Enemy Win");
+        DelayBeforeRestart();
+        bSomeoneWon = true;
+        bCanSpawnBall = false;
     }
+}
+
+void ABaseGameMode::DelayBeforeRestart()
+{
+    FTimerHandle RestartTimerHandle;
+    GetWorldTimerManager().SetTimer(RestartTimerHandle, this, &ABaseGameMode::RestartGame, DelayBeforeRestartTime, false);
 }
 
 void ABaseGameMode::RestartGame()
@@ -39,22 +89,22 @@ void ABaseGameMode::RestartGame()
     UGameplayStatics::OpenLevel(GetWorld(), FName(*CurrentLevelName));
 }
 
-void ABaseGameMode::PauseGame()
-{   
-    UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 0.01f);
-	// Set a timer to reset the time dilation after 5 seconds
-    FTimerHandle SlowMotionTimerHandle;
-	GetWorldTimerManager().SetTimer(SlowMotionTimerHandle, this, &ABaseGameMode::ResumeGame, 0.03f, false);
+void ABaseGameMode::BallTimerHandler()
+{
+    FTimerHandle SpawnBallTimerHandle;
+    GetWorldTimerManager().SetTimer(SpawnBallTimerHandle, this, &ABaseGameMode::SpawnBall, TimerBeforeBallSpawn, false);
 }
 
-void ABaseGameMode::ResumeGame()
+void ABaseGameMode::CallSpawnBall()
 {
-    UGameplayStatics::SetGlobalTimeDilation(GetWorld(), 1.0f);
-}   
+    BallTimerHandler();
+}
 
 void ABaseGameMode::SpawnBall()
 {
-    GetWorld()->SpawnActor<ABall>(BallClass, FVector(0.0f , 0.0f, 60.0f), FRotator::ZeroRotator);
+    if (!bCanSpawnBall) {return;}
+    if (!BallClass) {return;}
+    GetWorld()->SpawnActor<ABall>(BallClass, BallSpawnLocation, FRotator::ZeroRotator);
 }
 
 void ABaseGameMode::IncreaseScore(bool bPlayerScored,int32 ScoreAmount)

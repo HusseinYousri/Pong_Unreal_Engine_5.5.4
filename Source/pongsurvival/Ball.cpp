@@ -61,16 +61,14 @@ UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHi
 	if (OtherActor->ActorHasTag("player"))
 	{
 		ReverseX();
-		Speed.Y += -SpeedRatePerHit;
-		Speed.X += SpeedRatePerHit;
+		IncreaseBallSpeedOnHit();
 		PlayHitSound();
 	}
 
 	else if (OtherActor->ActorHasTag("enemy"))
 	{
-		Speed.X += SpeedRatePerHit;
-		Speed.Y += SpeedRatePerHit;
 		ReverseX();
+		IncreaseBallSpeedOnHit();
 		PlayHitSound();
 	}
 
@@ -78,6 +76,32 @@ UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHi
 	{
 		ReverseY();
 		PlayHitSound();
+	}
+}
+
+void ABall::IncreaseBallSpeedOnHit()
+{
+	// Checking if speed is negative or positive and adding speed rate to it.
+	// Using Sign Function because it is easier to read and understand.
+
+	// Y-Axis
+	if (FMath::Sign(Speed.Y) < 0)
+	{
+		Speed.Y += -SpeedRatePerHit;
+	}
+	else
+	{
+		Speed.Y += SpeedRatePerHit;
+	}
+
+	// X-Axis
+	if (FMath::Sign(Speed.X) < 0)
+	{
+		Speed.X += -SpeedRatePerHit;
+	}
+	else
+	{
+		Speed.X += SpeedRatePerHit;
 	}
 }
 
@@ -99,62 +123,24 @@ void ABall::PlayHitSound()
 
 void ABall::RandYDirection()
 {
-	int32 RandomY = FMath::RandRange(1,6);
+	int32 RandomY = FMath::RandRange(1,4);
 	switch(RandomY)
 	{
-		case 1:
-		Speed.Y = 1200.0f;
-		return;
-
-		case 2:
-		Speed.Y = -1200.0f;
-		return;
-
-		case 3:
-		Speed.Y = 1300.0f;
-		return;
-
-		case 4:
-		Speed.Y = -1300.0f;
-		return;
-
-		case 5:
-		Speed.Y = 1400.0f;
-		return;
-
-		case 6:
-		Speed.Y = -1400.0f;
-		return;
+		case 1: Speed.Y = 1200.0f; return;
+		case 2: Speed.Y = -1200.0f; return;
+		case 3: Speed.Y = 1300.0f; return;
+		case 4: Speed.Y = -1300.0f; return;
 	}
 }
 
 void ABall::RandXDirection()
 {
-	int32 RandomX = FMath::RandRange(1,6);
+	int32 RandomX = FMath::RandRange(1,4);
 	switch (RandomX)
 	{
-		case 1:
-		Speed.X = 1800.0f;
-		return;
-
-		case 2:
-		Speed.X = -1800.0f;
-		return;
-
-		case 3:
-		Speed.X = 1700.0f;
-		return;
-
-		case 4:
-		Speed.X = -1700.0f;
-		return;
-
-		case 5:
-		Speed.X = 2000.0f;
-		return;
-
-		case 6:
-		Speed.X = -2000.0f;
-		return;
+		case 1: Speed.X = 1500.0f; return;
+		case 2: Speed.X = -1500.0f; return;
+		case 3: Speed.X = 1600.0f; return;
+		case 4: Speed.X = -1600.0f; return;
 	}
 }

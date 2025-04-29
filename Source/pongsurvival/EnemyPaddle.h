@@ -17,6 +17,11 @@ class PONGSURVIVAL_API AEnemyPaddle : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AEnemyPaddle();
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
 	
 public:	
 	// Called every frame
@@ -36,9 +41,12 @@ private:
 
 	// === Behavior ===
 	UPROPERTY(EditAnyWhere, Category = "Behavior")
+	bool bCanControlSpeed  = false;
+
+	UPROPERTY(EditAnyWhere, Category = "Behavior")
 	FVector Speed;
 
-	UPROPERTY(EditAnyWhere, BlueprintReadWrite, Category = "Behavior", meta = (AllowPrivateAccess = "true"));
+	UPROPERTY(EditAnyWhere, Category = "Behavior");
 	float TrackSpeed = 8.0f;
 
 	// === Functions ===

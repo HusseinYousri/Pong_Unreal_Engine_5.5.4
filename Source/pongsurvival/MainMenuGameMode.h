@@ -6,9 +6,6 @@
 #include "GameFramework/GameModeBase.h"
 #include "MainMenuGameMode.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class PONGSURVIVAL_API AMainMenuGameMode : public AGameModeBase
 {
@@ -23,11 +20,24 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Functions")
 	void StartGame();
 
-	// === Blueprint Variables ===
+	// === Public Functions ===
+	void UnShowMainMenuWidget();
+	void CastToDifficultyMenuWidget();
+	void BackToMainMenu();
 
 private:
 
-	// === GameMode Variables ===
-	UPROPERTY(EditDefaultsOnly, Category = "GameMode")
+	// === Classes Refrences ===
+	class UMainMenuWIdget* MainMenuWidget = nullptr;
+	class UDifficultyMenuWidget* DifficultyMenuWidget = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
 	TSubclassOf<class UMainMenuWIdget> MainMenuWidgetClass;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Widget")
+	TSubclassOf<class UDifficultyMenuWidget> DifficultyMenuWidgetClass;
+
+	// === Functions ===
+	void CastMainMenuWidget();
+	void SetMouseCursorVisibility(const bool& bShowMouseCursor);
 };

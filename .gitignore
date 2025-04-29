@@ -1,51 +1,85 @@
-# Unreal Engine 5 project .gitignore
+# Unreal Engine 4 & 5 .gitignore
+# Recommended by Epic Games and GitHub
 
-# Build and intermediate folders
+# Build Folders
 Binaries/
 DerivedDataCache/
 Intermediate/
 Saved/
 
-# User-specific and IDE files
-.vscode/
-*.sln
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 *.opensdf
 *.sdf
-*.suo
-*.tmp
-*.user
-*.userprefs
 *.VC.db
 *.VC.opendb
+*.vscode/
 
-# Compiled binaries and logs
-*.log
+# Compiled source files
 *.pdb
-*.obj
 *.exe
 *.dll
 *.lib
+*.app
+*.dylib
+*.ipa
+*.so
+*.a
 *.exp
+*.patch_*
 
-# Ignore crash and debug info
+# Logs and crash dumps
+*.log
 *.dmp
-*.cache
-*.db
-*.sublime-workspace
-*.sublime-project
 
-# Ignore backup and autosave files
-*.bak
-*.tmp
-*.old
-*.orig
-
-# Ignore macOS and Windows system files
+# Ignore Mac files
 .DS_Store
+
+# Ignore Windows thumbnail cache
 Thumbs.db
 
-# Ignore Unreal Engine specific files
-.vs/
+# Ignore backup files
+*.bak
+*.tmp
+
+# Ignore generated project files
+*.xcodeproj
+*.xcworkspace
+*.xcconfig
+*.xcuserdata
+*.xcuserstate
+*.sln
+*.suo
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.opendb
+
+# Ignore plugin intermediates
+Plugins/*/Intermediate/
+Plugins/*/Binaries/
+
+# Ignore config files that are user-specific
+Config/DefaultEditorPerProjectUserSettings.ini
+Config/DefaultEditorUserSettings.ini
 
 # Ignore local build data
 Build/
+
+# Ignore Unreal AutomationTool logs
+AutomationTool/Logs/
+
+# Ignore crash reports
+CrashReportClient/Saved/
+
+# Ignore local launcher data
+Launcher/Engine/Binaries/Win64/UnrealVersionSelector.exe
+
+# Ignore custom
+*.swp
+*.swo
+
+# End of file

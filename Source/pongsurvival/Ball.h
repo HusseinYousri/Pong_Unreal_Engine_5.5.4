@@ -46,6 +46,7 @@ private:
 	void RandYDirection();
 	void RandXDirection();
 	void PlayHitSound();
+	void IncreaseBallSpeedOnHit();
 
 	// === Movement ===
 	UPROPERTY(EditAnyWhere, Category = "Movement")

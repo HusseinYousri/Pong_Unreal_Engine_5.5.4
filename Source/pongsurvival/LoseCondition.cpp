@@ -21,17 +21,12 @@ void ALoseCondition::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GameMode = Cast<ABaseGameMode>(UGameplayStatics::GetGameMode(this));
+	CastToGameMode();
 	
+	// Set the box to be a trigger
 	BoxComp->OnComponentBeginOverlap.AddDynamic(this, &ALoseCondition::OnOverlapBegin);
 }
 
-// Called every frame
-void ALoseCondition::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-}
 
 void ALoseCondition::OnOverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, 
 UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -40,11 +35,10 @@ UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHi
 
 	bool bIsPlayerNet = ActorHasTag("playernet");
 	bool bIsEnemyNet = ActorHasTag("enemynet");
-
+	
 	// Destroy current ball and respawn another
 	OtherActor->Destroy();
-	GameMode->SpawnBall();
-
+	
 	if (bIsPlayerNet)
 	{
 		GameMode->IncreaseScore(false, 1);
@@ -57,10 +51,21 @@ UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHi
 		PlayScoringSound();
 	}
 
+	GameMode->CallSpawnBall();
 }
 
 void ALoseCondition::PlayScoringSound()
 {
 	if (!SFX_Scored) {return;}
 	UGameplayStatics::PlaySound2D(GetWorld(), SFX_Scored);
+}
+
+void ALoseCondition::CastToGameMode()
+{
+	GameMode = Cast<ABaseGameMode>(UGameplayStatics::GetGameMode(this));
+	if (!GameMode)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("LoseCondition: GameMode not found!"));
+		return;
+	}
 }
