@@ -1,4 +1,4 @@
-# Pong Survival
+# Pong Game
 
 ## Project Overview
 Pong Survival is a complete Unreal Engine 5 project inspired by the classic Pong game. This project was a valuable learning experience, and I am proud of the progress I made throughout its development.
