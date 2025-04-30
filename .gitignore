@@ -1,13 +1,12 @@
-# Unreal Engine 4 & 5 .gitignore
-# Recommended by Epic Games and GitHub
-
-# Build Folders
+# Unreal Engine standard .gitignore
+# Exclude build and cache folders
 Binaries/
 DerivedDataCache/
 Intermediate/
 Saved/
+Build/
 
-# User-specific files
+# Exclude user-specific and temporary files
 *.suo
 *.user
 *.userosscache
@@ -18,53 +17,38 @@ Saved/
 *.VC.opendb
 *.vscode/
 
-# Compiled source files
-*.pdb
-*.exe
-*.dll
-*.lib
-*.app
-*.dylib
-*.ipa
-*.so
-*.a
-*.exp
-*.patch_*
+# Exclude packaged builds
+Packaged/
+Standalone/
 
-# Logs and crash dumps
+# Exclude log files
 *.log
+
+# Exclude crash reports
 *.dmp
 
-# Ignore Mac files
-.DS_Store
+# Exclude local config (optional)
+Config/DefaultEditorPerProjectUserSettings.ini
+Config/DefaultEditorUserSettings.ini
 
-# Ignore Windows thumbnail cache
+# Exclude Mac and Linux files
+.DS_Store
+*.swp
+
+# Exclude Windows thumbnail cache
 Thumbs.db
 
-# Ignore backup files
+# Exclude backup files
 *.bak
 *.tmp
 
-# Ignore generated project files
-*.xcodeproj
-*.xcworkspace
-*.xcconfig
-*.xcuserdata
-*.xcuserstate
-*.sln
-*.suo
-*.opensdf
-*.sdf
-*.VC.db
-*.VC.opendb
+# Exclude Python cache
+__pycache__/
+*.pyc
 
 # Ignore plugin intermediates
 Plugins/*/Intermediate/
 Plugins/*/Binaries/
-
-# Ignore config files that are user-specific
-Config/DefaultEditorPerProjectUserSettings.ini
-Config/DefaultEditorUserSettings.ini
 
 # Ignore local build data
 Build/
@@ -77,9 +61,5 @@ CrashReportClient/Saved/
 
 # Ignore local launcher data
 Launcher/Engine/Binaries/Win64/UnrealVersionSelector.exe
-
-# Ignore custom
-*.swp
-*.swo
 
 # End of file
